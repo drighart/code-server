@@ -40,9 +40,9 @@ RUN adduser --gecos '' --disabled-password coder && \
 
 USER coder
 # We create first instead of just using WORKDIR as when WORKDIR creates, the user is root.
-RUN mkdir -p /home/coder/project
+# RUN mkdir -p /home/coder/project
 
-WORKDIR /home/coder/project
+WORKDIR /home/coder
 
 RUN pip install \
     python-language-server \
@@ -56,7 +56,7 @@ RUN npm install -g @quasar/cli
 
 # This assures we have a volume mounted even if the user forgot to do bind mount.
 # So that they do not lose their data if they delete the container.
-VOLUME [ "/home/coder/project" ]
+# VOLUME [ "/home/coder/project" ]
 
 COPY --from=0 /src/packages/server/cli-linux-x64 /usr/local/bin/code-server
 EXPOSE 8443 8080

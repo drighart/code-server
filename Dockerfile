@@ -19,6 +19,16 @@ RUN yarn && NODE_ENV=production yarn task build:server:binary
 #FROM ubuntu:18.04
 FROM drighart/workbench-python-base:latest
 
+RUN pip install \
+    python-language-server \
+    flake8 \
+    autopep8 \
+    pylint \
+    pytest \
+    virtualenv
+
+RUN npm install -g @quasar/cli
+
 RUN apt-get update && apt-get install -y \
 	openssl \
 	net-tools \
@@ -43,16 +53,6 @@ USER coder
 # RUN mkdir -p /home/coder/project
 
 WORKDIR /home/coder
-
-RUN pip install \
-    python-language-server \
-    flake8 \
-    autopep8 \
-    pylint \
-    pytest \
-    virtualenv
-
-RUN npm install -g @quasar/cli
 
 # This assures we have a volume mounted even if the user forgot to do bind mount.
 # So that they do not lose their data if they delete the container.

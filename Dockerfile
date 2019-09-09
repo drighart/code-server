@@ -44,11 +44,21 @@ RUN mkdir -p /home/coder/project
 
 WORKDIR /home/coder/project
 
+RUN pip install \
+    python-language-server \
+    flake8 \
+    autopep8 \
+    pylint \
+    pytest \
+    virtualenv
+
+RUN npm install -g @quasar/cli
+
 # This assures we have a volume mounted even if the user forgot to do bind mount.
 # So that they do not lose their data if they delete the container.
 VOLUME [ "/home/coder/project" ]
 
 COPY --from=0 /src/packages/server/cli-linux-x64 /usr/local/bin/code-server
-EXPOSE 8443
+EXPOSE 8443 8080
 
 ENTRYPOINT ["dumb-init", "code-server"]
